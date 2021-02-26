@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "748511827094",
+    "project_id": "dm-summit",
+    "storage_bucket": "dm-summit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748511827094:android:e0e0f9d8b256d312935eb7",
+        "android_client_info": {
+          "package_name": "com.cse.dmsummit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748511827094-i97icdcc5i7lhbbo0l5ml1h7sur8rd7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAAs7XhiEmbKuDWPKx5ox5uvk2Gdq8NVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748511827094-i97icdcc5i7lhbbo0l5ml1h7sur8rd7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

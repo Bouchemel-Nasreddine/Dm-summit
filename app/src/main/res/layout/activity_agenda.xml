@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/agenda_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/agenda_toolbar_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/back"
+            app:backgroundTint="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/roboto_thin"
+            android:text="@string/agenda"
+            android:textColor="@color/dark_blue"
+            android:textSize="24sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/agenda_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#00ffffff"
+        android:paddingBottom="?attr/actionBarSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/agenda_toolbar" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/event_info_dialog"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintHeight_percent=".6"
+        android:background="@color/dark_blue"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/event_info_dialog_title"
+            android:text="conference"
+            android:layout_gravity="center"
+            android:textColor="@color/orange"
+            android:textSize="24sp"
+            android:fontFamily="@font/arial_rounded_mt"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/description"
+            android:textColor="@color/White_Flight"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto_thin"
+            android:gravity="center"
+            android:id="@+id/event_info_dialog_description"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/event_info_dialog_day"
+            android:text="day 1"
+            android:textColor="@color/White_Flight"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/event_info_dialog_time"
+            android:text="09:00-10:00"
+            android:textColor="@color/White_Flight"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/rectangle_solid"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:id="@+id/event_info_dialog_close"
+            android:text="fermer"
+            android:textSize="8sp"
+            android:textColor="@color/dark_green_blue"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

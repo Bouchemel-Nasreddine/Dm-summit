@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">DM summit</string>
+    <string name="login">connexion</string>
+    <string name="login_u"><u>se connecter</u></string>
+    <string name="register">inscription</string>
+    <string name="register_u"><u>s\'inscrire</u></string>
+    <string name="user_passwd">mot de passe</string>
+    <string name="user_mail">addresse email</string>
+    <string name="already_registered_login">déja inscrit? </string>
+    <string name="user_phone">phone</string>
+    <string name="don_t_have_an_account_register">vous n\'avez pas un compte? </string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="confirmerPsswd">confirmer votre mot de passe</string>
+    <string name="logout">deconnexion</string>
+    <string name="profile">Profile</string>
+    <string name="accueil">Accueil</string>
+    <string name="agenda">Agenda</string>
+    <string name="maps">Maps</string>
+    <string name="scanner_qrcode">Scanner QRcode</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="confirmer_participation">confirmer participation</string>
+    <string name="password_forgotten">mot de passe oublié</string>
+    <string name="dm_summit">DM summit</string>
+    <string name="description">DM Summit a toute la sensation d\'une grande conférence nationale de marketing numérique: des conférenciers incroyables, un réseautage professionnel, les meilleurs fournisseurs de martech et le meilleur contenu pour faire avancer votre carrière
+</string>
+    <string name="organizer_redirect"><u>Vous etez un organisateur?</u></string>
+    <string name="participant_redirect"><u>Vous etez un participant?</u></string>
+
+</resources>

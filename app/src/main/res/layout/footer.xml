@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="15dp"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/cse_wb"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/footer_insta"
+        android:id="@+id/footer_fb"
+        android:background="@drawable/facebook"
+        app:backgroundTint="@color/dark_blue"
+        android:onClick="openFacebook"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/footer_fb"
+        app:layout_constraintRight_toLeftOf="@id/footer_email"
+        android:id="@+id/footer_insta"
+        android:background="@drawable/instagram"
+        app:backgroundTint="@color/dark_blue"
+        android:onClick="openInstagram"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="45dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/footer_insta"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/footer_email"
+        android:background="@drawable/email"
+        app:backgroundTint="@color/dark_blue"
+        android:onClick="openEmail"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/profile_background"
+    android:gravity="bottom">
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/nav_logout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/logout"
+        app:backgroundTint="@color/White_Flight"
+        android:layout_marginTop="30dp"
+        android:onClick="logout"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/nav_profile_picture"
+        android:background="@drawable/person"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_profile_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="openProfile"
+        app:shapeAppearance="@style/circular"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nav_profile_name"
+        android:textColor="@color/White_Flight"
+        android:textSize="24sp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="openProfile"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
