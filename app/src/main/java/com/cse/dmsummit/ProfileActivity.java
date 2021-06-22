@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -73,118 +74,146 @@ public class ProfileActivity extends AppCompatActivity {
         user = fAuth.getCurrentUser();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        retrieveUserInfo(user);
+        String mode = getIntent().getStringExtra("mode");
 
-        if (!user.isEmailVerified()) {
-            info.setVisibility(View.VISIBLE);
-        }
+        if (mode.equals("view")) {
+            profileName.setText(getIntent().getStringExtra("first") + " " + getIntent().getStringExtra("last"));
+            profileMail.setText(getIntent().getStringExtra("email"));
+            profileID.setText(getIntent().getStringExtra("id"));
+            TextView reservation = findViewById(R.id.profile_reservation);
+            reservation.setVisibility(View.VISIBLE);
+            reservation.setText("participation confirmé: " + getIntent().getStringExtra("reserved"));
 
-
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
-                dialog.setTitle("verification d'email");
-                dialog.setMessage("vous n'avez pas verifie votre adresse mail, envoyer un mail de verification?");
-                dialog.setPositiveButton("envoyer", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (user == null) return;
-                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(getApplicationContext(), "email de verification envoyé", Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-                    }
-                });
-                dialog.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                dialog.create().show();
-            }
-        });
-
-        /**resetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText oldPassword = new EditText(v.getContext());
-                oldPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                oldPassword.setHint("encien mot de passe");
-                EditText resetPassword = new EditText(v.getContext());
-                resetPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                resetPassword.setHint("nouveau mot de passe");
-                LinearLayout layout = new LinearLayout(v.getContext());
-                layout.setOrientation(LinearLayout.VERTICAL);
-                layout.addView(oldPassword);
-                layout.addView(resetPassword);
-                AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
-                dialog.setView(layout);
-                dialog.setTitle("changez votre mot de passe");
-                dialog.setPositiveButton("changer", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        fAuth.signInWithEmailAndPassword(mail, oldPassword.getText().toString());
-                        user.updatePassword(resetPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "le mot de passe a été changé", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Log.d("TAG", "TAG " + task.getException().getMessage());
-                                    Toast.makeText(getApplicationContext(), "erreur dans le changement de mot de passe", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                    }
-                });
-                dialog.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                dialog.create().show();
-
-            }
-        });**/
-
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryIntent, 1000);
-            }
-        });
-
-        confirmParticipation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user.isEmailVerified()) {
-                    DocumentReference documentReference = db.collection("users").document(user.getUid());
-                    documentReference.update("reserved", "YES");
-                    confirmParticipation.setVisibility(View.GONE);
+            StorageReference pictureRef = storageReference.child(getIntent().getStringExtra("id") + ".jpg");
+            pictureRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext())
+                            .load(uri)
+                            .centerCrop()
+                            .into(profilePicture);
                 }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("TAG", e.getMessage());
+                    Toast.makeText(getApplicationContext(), "could not get profile picture", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            info.setVisibility(View.INVISIBLE);
+            confirmParticipation.setVisibility(View.INVISIBLE);
+        }
+        else {
+
+            retrieveUserInfo(user);
+
+            if (!user.isEmailVerified()) {
+                info.setVisibility(View.INVISIBLE);
             }
-        });
+
+
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
+                    dialog.setTitle("verification d'email");
+                    dialog.setMessage("vous n'avez pas verifie votre adresse mail, envoyer un mail de verification?");
+                    dialog.setPositiveButton("envoyer", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (user == null) return;
+                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getApplicationContext(), "email de verification envoyé", Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+                        }
+                    });
+                    dialog.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.create().show();
+                }
+            });
+
+            /**resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+            EditText oldPassword = new EditText(v.getContext());
+            oldPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            oldPassword.setHint("encien mot de passe");
+            EditText resetPassword = new EditText(v.getContext());
+            resetPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            resetPassword.setHint("nouveau mot de passe");
+            LinearLayout layout = new LinearLayout(v.getContext());
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.addView(oldPassword);
+            layout.addView(resetPassword);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(v.getContext());
+            dialog.setView(layout);
+            dialog.setTitle("changez votre mot de passe");
+            dialog.setPositiveButton("changer", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialog, int which) {
+            fAuth.signInWithEmailAndPassword(mail, oldPassword.getText().toString());
+            user.updatePassword(resetPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override public void onComplete(@NonNull Task<Void> task) {
+            if (task.isSuccessful()) {
+            Toast.makeText(getApplicationContext(), "le mot de passe a été changé", Toast.LENGTH_LONG).show();
+            } else {
+            Log.d("TAG", "TAG " + task.getException().getMessage());
+            Toast.makeText(getApplicationContext(), "erreur dans le changement de mot de passe", Toast.LENGTH_LONG).show();
+            }
+            }
+            });
+            }
+            });
+            dialog.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialog, int which) {
+
+            }
+            });
+            dialog.create().show();
+
+            }
+            });**/
+
+            profilePicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(galleryIntent, 1000);
+                }
+            });
+
+            confirmParticipation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (user.isEmailVerified()) {
+                        DocumentReference documentReference = db.collection("users").document(user.getUid());
+                        documentReference.update("reserved", "YES");
+                        confirmParticipation.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this, MainActivity.class));
                 finish();
             }
         });
-
     }
 
     @Override
@@ -201,7 +230,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImageToFireBase(Uri imageUri) {
-        StorageReference fileRef = storageReference.child(user.getUid()+".jpg");
+        StorageReference fileRef = storageReference.child(user.getUid() + ".jpg");
         fileRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -223,16 +252,15 @@ public class ProfileActivity extends AppCompatActivity {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-
                 if (value == null) return;
 
                 profileName.setText(value.getString("FirstName") + " " + value.getString("LastName"));
                 profileMail.setText(value.getString("email"));
-                if (value.getString("reserved").equals("NO")) {
+                if (value.contains("reserved") && value.getString("reserved").equals("NO")) {
                     confirmParticipation.setVisibility(View.VISIBLE);
                 }
                 profileID.setText("ID: " + user.getUid());
-                StorageReference pictureRef = storageReference.child(user.getUid()+".jpg");
+                StorageReference pictureRef = storageReference.child(user.getUid() + ".jpg");
                 pictureRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {

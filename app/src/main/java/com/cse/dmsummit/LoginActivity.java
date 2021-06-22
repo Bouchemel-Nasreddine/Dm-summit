@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     MaterialButton login, back;
     private TextView registerRedirecting, passwordForgotten, loginTypeRedirection;
     private ImageView image;
+    private String userType = "par";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Verifications.verifyEmpty(userMail) && Verifications.verifyEmpty(userPassword)
+                        && (Verifications.verifyOrgEmail(userMail, userType))
+                        && ( Verifications.verifyParEmail(userMail, userType))
                         && Verifications.verifyEmail(userMail)) {
                         fAuth.signInWithEmailAndPassword(userMail.getText().toString().trim(), userPassword.getText().toString().trim())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -131,9 +134,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginTypeRedirection.getText().toString().equals(getResources().getString(R.string.organizer_redirect))) {
                     loginTypeRedirection.setText(R.string.participant_redirect);
                     image.setBackgroundResource(R.drawable.organistaeur);
+                    userType = "org";
+                    userMail.setText("");
+                    userPassword.setText("");
                 } else {
                     loginTypeRedirection.setText(R.string.organizer_redirect);
                     image.setBackgroundResource(R.drawable.person);
+                    userType = "par";
+                    userMail.setText("");
+                    userPassword.setText("");
                 }
             }
         });

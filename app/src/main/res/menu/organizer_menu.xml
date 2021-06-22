@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
 
+        <item
+            android:id="@+id/nav_accueil"
+            android:icon="@drawable/home"
+            android:title="@string/accueil" />
+
+        <item
+            android:id="@+id/nav_agenda"
+            android:icon="@drawable/agenda"
+            android:title="@string/agenda" />
+
+        <item
+            android:id="@+id/nav_taches"
+            android:icon="@drawable/tasks"
+            android:title="@string/taches" />
+
+        <item
+            android:id="@+id/nav_participans"
+            android:icon="@drawable/participants"
+            android:title="@string/participans" />
+
+    </group>
 </menu>

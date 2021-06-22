@@ -18,19 +18,19 @@ public class Verifications {
         return true;
     }
 
-    public static boolean verifyOrgEmail(EditText email) {
+    public static boolean verifyOrgEmail(EditText email, String type) {
         String mail = email.getText().toString().trim();
-        if (Arrays.asList(orgMails).contains(mail)) {
-            email.setError("c'est une adresse email d'oranisateur ");
+        if (type.equals("org") && !Arrays.asList(orgMails).contains(mail)) {
+            email.setError("ce n'est pas une adresse email d'organisateur ");
             return false;
         }
         return true;
     }
 
-    public static boolean verifyParEmail(EditText email) {
+    public static boolean verifyParEmail(EditText email, String type) {
         String mail = email.getText().toString().trim();
-        if (!Arrays.asList(orgMails).contains(mail)) {
-            email.setError("ce n'est une adresse email d'oranisateur ");
+        if (type.equals("par") && Arrays.asList(orgMails).contains(mail)) {
+            email.setError("c'est une adresse email d'organisateur ");
             return false;
         }
         return true;

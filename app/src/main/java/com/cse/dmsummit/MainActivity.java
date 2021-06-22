@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser user;
     private StorageReference storageReference;
     private User userObject;
-    private Image picture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         setTitle("");
 
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+
 
         setSupportActionBar(toolbar);
 
@@ -117,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             user = fAuth.getCurrentUser();
             register.setVisibility(View.INVISIBLE);
             login.setVisibility(View.INVISIBLE);
-            retreiveUserInfo(user);
+            userObject = retreiveUserInfo(user);
+
         }
         
         disableNavigationDrawer();
@@ -154,10 +157,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setUserUI(User userObject) {
 
-        ImageView picture = (findViewById(R.id.nav_profile_picture));
-        Picasso.with(getApplicationContext()).load(userObject.getPictureUri()).centerCrop().into(picture);
+
+        if (userObject.getType().equals("organizer")) {
+            navView.getMenu().clear();
+            navView.inflateMenu(R.menu.organizer_menu);
+        } else if (userObject.getType().equals("participant")) {
+            navView.getMenu().clear();
+            navView.inflateMenu(R.menu.participant_menu);
+        }
+
         TextView userName = findViewById(R.id.nav_profile_name);
         userName.setText(userObject.getFirstName() + " " + userObject.getLastName());
+
     }
 
     private void disableNavigationDrawer() {
@@ -190,22 +201,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_LONG).show();
         switch (item.getItemId()) {
          case R.id.nav_agenda:
             startActivity(new Intent(MainActivity.this, AgendaActivity.class));
             break;
          case R.id.nav_scanner:
              startActivity(new Intent(MainActivity.this, ScannerActivity.class));
-            break;
+             break;
+            case R.id.nav_participans:
+                startActivity(new Intent(MainActivity.this, ParticipansActivity.class));
+                break;
+            case R.id.nav_taches:
+                startActivity(new Intent(MainActivity.this, TachesActivity.class));
+                break;
          }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void openProfile(View view) {
-        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-        finish();
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        intent.putExtra("mode", "edit");
+        startActivity(intent);
     }
 
     public void openFacebook(View view) {
@@ -234,10 +251,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(Intent.createChooser(intent, "Send mail"));
     }
 
-    public class User {
+    public static class User {
         private String ID, firstName, lastName, email, type, reservation, pictureUri;
 
-        public User(String ID, String firstName, String lastName, String email, String type, String reservation, String pictureUri) {
+        public User(String ID, String firstName, String lastName, String email, String reservation, String type, String pictureUri) {
 
             this.ID = ID;
             this.firstName = firstName;
@@ -296,7 +313,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 userInfo[4] = value.getString("reserved");
                 userInfo[5] = value.getString("type");
 
-                if (userInfo[4].equals("NO") && userInfo[5].equals("participant")) {
+                if (userInfo[5].equals("participant") &&
+                        userInfo[4].equals("NO")) {
                     confirmParticipation.setVisibility(View.VISIBLE);
                 }
 
@@ -311,8 +329,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("TAG", e.getMessage());
-                        Toast.makeText(getApplicationContext(), "could not get profile picture", Toast.LENGTH_LONG).show();
-
                     }
                 });
 
@@ -320,7 +336,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
 
         return userObject;
     }

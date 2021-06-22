@@ -27,5 +27,7 @@
 </string>
     <string name="organizer_redirect"><u>Vous etez un organisateur?</u></string>
     <string name="participant_redirect"><u>Vous etez un participant?</u></string>
+    <string name="taches">taches</string>
+    <string name="participans">participans</string>
 
 </resources>
